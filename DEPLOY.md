@@ -8,7 +8,8 @@ Pour la doc générale du projet (stack, installation locale, structure), voir
 
 ## 0. Avant le tout premier déploiement (une seule fois)
 
-- [ ] Créer le "Site" AlwaysData : document root pointé sur `.../portfolio/public` (jamais la racine du projet).
+- [ ] Créer le "Site" AlwaysData avec pour **répertoire racine `www/gnaportfolio/public/`** (le sous-dossier `public/` du projet cloné dans `~/www/gnaportfolio`, jamais la racine du projet elle-même).
+  > **Note** : le site est servi directement à la racine du compte AlwaysData (`https://gnahoui.alwaysdata.net`), **pas** via un sous-chemin type `gnahoui.alwaysdata.net/gnaportfolio`. Un sous-chemin a été testé et provoquait une erreur **405 Method Not Allowed** non résolue sur ce type d'hébergement (probablement lié à la façon dont AlwaysData route les requêtes vers un sous-répertoire plutôt qu'un "Site" dédié). La configuration retenue pointe donc le "Site" AlwaysData directement sur `www/gnaportfolio/public/`.
 - [ ] Choisir PHP **8.3 ou supérieur** dans la configuration du site (`composer.json` exige `^8.3`).
 - [ ] Décider de la base de données :
   - [ ] **SQLite** (le plus simple) — le stockage AlwaysData est persistant (pas de système de fichiers éphémère comme sur certains PaaS), donc `database/database.sqlite` survit aux déploiements sans précaution particulière ; s'assurer juste qu'il est bien exclu du dépôt Git (déjà le cas via `database/.gitignore`) et créé/migré directement sur le serveur.
@@ -28,7 +29,7 @@ Le `.env` de production se crée **directement sur le serveur** (copie de
 | `APP_NAME` | `Portfolio` (ou le nom choisi) |
 | `APP_ENV` | `production` |
 | `APP_DEBUG` | `false` |
-| `APP_URL` | `https://ton-domaine.tld` (URL réelle, en HTTPS) |
+| `APP_URL` | `https://gnahoui.alwaysdata.net` (racine du domaine, sans sous-chemin — voir note en section 0) |
 | `APP_KEY` | générée **sur le serveur** via `php artisan key:generate --force`, ne jamais réutiliser celle de dev |
 | `DB_CONNECTION` | `sqlite` (ou `mysql`/`pgsql` selon le choix fait à l'étape 0) |
 | `DB_DATABASE` | chemin absolu du fichier `.sqlite`, ou nom de la base si MySQL/PostgreSQL |
@@ -88,3 +89,22 @@ Le `.env` de production se crée **directement sur le serveur** (copie de
 - [ ] `php artisan view:cache`
 
 (`storage:link` n'est à relancer que si `storage/app/public` a été recréé de zéro — pas nécessaire à chaque déploiement.)
+
+## 6. Retour d'expérience — point de vigilance identifié pendant ce déploiement
+
+Le composant carrousel (`x-carousel-nav`, utilisé par les sections Articles et
+Projets) dépend **entièrement** d'Alpine.js pour s'afficher : chaque slide est
+enveloppé dans `x-show="slide === n" x-cloak`, et `[x-cloak]{display:none!important}`
+masque ces slides tant qu'Alpine n'a pas tourné dans le navigateur pour retirer
+l'attribut. Résultat : si le JS ne charge pas ou échoue à s'exécuter (erreur
+réseau, erreur JS ailleurs sur la page, navigateur avec JS désactivé…), **la
+section entière paraît vide** — aucune carte, seuls les flèches/points de
+pagination restent visibles (ils sont hors du bloc `x-cloak`) — alors même que
+le contenu existe bien en base et est présent dans le HTML généré côté serveur.
+
+Ce point a été identifié lors du diagnostic post-déploiement de ce site
+(contenu bien en base, assets bien servis, mais rendu visuel vide côté
+carrousel). À améliorer un jour : afficher le premier slide par défaut sans
+dépendre du JS (ex. ne pas mettre `x-cloak` sur le premier slide, ou le rendre
+visible par CSS par défaut et ne masquer les suivants qu'une fois Alpine prêt),
+pour que le contenu reste visible en cas d'échec JS.

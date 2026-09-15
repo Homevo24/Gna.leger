@@ -108,14 +108,13 @@ Le site public propose un bouton de bascule dans la navbar (icône soleil/lune).
 
 **À faire avant une mise en ligne réelle :**
 
-1. **Choisir un hébergeur** et mettre en place son mécanisme de déploiement (Forge, Render, Railway, o2switch, VPS + Nginx…) — aucune configuration de ce type n'existe encore dans le projet.
-2. **Variables d'environnement de production**, sur le serveur uniquement :
+1. **Variables d'environnement de production**, sur le serveur uniquement :
    - `APP_ENV=production` et `APP_DEBUG=false` (sinon les erreurs affichent la stacktrace complète publiquement) ;
-   - `APP_URL=https://ton-domaine.tld` (URL réelle, en HTTPS) ;
+   - `APP_URL=https://gnahoui.alwaysdata.net` (URL réelle, en HTTPS) ;
    - `SESSION_SECURE_COOKIE=true` (cookie de session envoyé uniquement en HTTPS) ;
    - une **nouvelle** `APP_KEY` générée sur le serveur (`php artisan key:generate`), différente de celle utilisée en local.
-3. **Base de données** : SQLite convient pour un trafic de portfolio, mais vérifie que l'hébergeur choisi persiste bien le fichier `database/database.sqlite` entre deux déploiements (certains PaaS ont un système de fichiers éphémère qui l'efface à chaque déploiement — dans ce cas, passer à MySQL/PostgreSQL managé).
-4. **Après le premier déploiement**, sur le serveur :
+2. **Base de données** : SQLite convient pour un trafic de portfolio, mais vérifie que l'hébergeur choisi persiste bien le fichier `database/database.sqlite` entre deux déploiements (certains PaaS ont un système de fichiers éphémère qui l'efface à chaque déploiement — dans ce cas, passer à MySQL/PostgreSQL managé).
+3. **Après le premier déploiement**, sur le serveur :
    ```bash
    php artisan migrate --force
    php artisan db:seed --class=AdminUserSeeder
@@ -125,10 +124,10 @@ Le site public propose un bouton de bascule dans la navbar (icône soleil/lune).
    php artisan view:cache
    npm run build
    ```
-5. **Mot de passe admin réel** : remplace le placeholder dans `AdminUserSeeder.php` par le vrai mot de passe avant de seeder en prod (ou seed avec le placeholder puis change-le immédiatement via `/profile`) — ne jamais commiter un vrai mot de passe.
-6. **Domaine Resend** : `onboarding@resend.dev` suffit tant que le formulaire de contact n'envoie qu'à ta propre adresse (`CONTACT_NOTIFICATION_EMAIL`). Si tu veux un jour répondre automatiquement aux visiteurs, il faudra vérifier un domaine sur Resend et adapter `MAIL_FROM_ADDRESS`.
-7. **Reverse proxy / HTTPS** : si l'hébergeur place l'app derrière un load balancer ou reverse proxy, configurer `trustProxies` dans `bootstrap/app.php` pour que Laravel détecte correctement le HTTPS (sinon des redirections en boucle ou des liens en `http://` peuvent apparaître).
-8. **Historique Git** : le dépôt local n'a pour l'instant qu'un commit initial (scaffold Breeze) — tout le travail réalisé depuis (thème, redesign, CRUD, emails, pages d'erreur…) n'est pas encore commité ni poussé vers un dépôt distant.
+4. **Mot de passe admin réel** : remplace le placeholder dans `AdminUserSeeder.php` par le vrai mot de passe avant de seeder en prod (ou seed avec le placeholder puis change-le immédiatement via `/profile`) — ne jamais commiter un vrai mot de passe.
+5. **Domaine Resend** : `onboarding@resend.dev` suffit tant que le formulaire de contact n'envoie qu'à ta propre adresse (`CONTACT_NOTIFICATION_EMAIL`). Si tu veux un jour répondre automatiquement aux visiteurs, il faudra vérifier un domaine sur Resend et adapter `MAIL_FROM_ADDRESS`.
+6. **Reverse proxy / HTTPS** : si l'hébergeur place l'app derrière un load balancer ou reverse proxy, configurer `trustProxies` dans `bootstrap/app.php` pour que Laravel détecte correctement le HTTPS (sinon des redirections en boucle ou des liens en `http://` peuvent apparaître).
+7. **Historique Git** : le dépôt local n'a pour l'instant qu'un commit initial (scaffold Breeze) — tout le travail réalisé depuis (thème, redesign, CRUD, emails, pages d'erreur…) n'est pas encore commité ni poussé vers un dépôt distant.
 
 ## Structure
 
