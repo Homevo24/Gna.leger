@@ -5,7 +5,7 @@
     'links' => [
         ['label' => 'GitHub', 'href' => 'https://github.com/Homevo24', 'icon' => 'github'],
         ['label' => 'LinkedIn', 'href' => 'https://www.linkedin.com/in/l%C3%A9ger-gnahoui-b38a63280/', 'icon' => 'linkedin'],
-        ['label' => 'E-mail', 'href' => 'mailto:gnahouileger32@gmail.com', 'icon' => 'mail'],
+        ['label' => 'E-mail', 'href' => 'mailto:admin@example.com', 'icon' => 'mail'],
         ['label' => 'Telegram', 'href' => 'https://t.me/legerGna', 'icon' => 'send'],
         ['label' => 'Facebook', 'href' => 'https://facebook.com/legergael.gnahoui.3', 'icon' => 'facebook'],
         ['label' => 'Instagram', 'href' => 'https://www.instagram.com/lger90?stkn=MTQ0Ymhwc2Nlc3N4NQ%3D%3D&utm_source=qr', 'icon' => 'instagram'],

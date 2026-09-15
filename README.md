@@ -53,7 +53,7 @@ openssl.cafile = "C:\chemin\vers\cacert.pem"
 
 Le seeder `AdminUserSeeder` crée un unique compte administrateur :
 
-- **Email** : `gnahouileger32@gmail.com`
+- **Email** : `admin@example.com`
 - **Mot de passe** : `change-me-now` (placeholder)
 
 **Change le mot de passe avant toute mise en ligne réelle**, de deux façons possibles :
