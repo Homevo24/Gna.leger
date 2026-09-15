@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Jetons de thème (Dark Mode = référence, Light Mode = inversion cohérente).
+ * `ink` (surface) et `paper` (texte/contraste) sont toujours des opposés :
+ * en clair comme en sombre, un élément "bg-X text-Y" reste lisible.
+ * Toutes les classes Tailwind existantes (bg-ink, text-paper, border-paper/10, ...)
+ * continuent de fonctionner sans changement, elles lisent simplement ces variables.
+ */
+:root {
+    color-scheme: dark;
+    --color-ink: 0 0 0;
+    --color-paper: 245 245 243;
+    --color-accent: 79 70 229;
+}
+
+:root[data-theme='light'] {
+    color-scheme: light;
+    --color-ink: 245 245 243;
+    --color-paper: 0 0 0;
+    --color-accent: 79 70 229;
+}
+
+/* Transition fluide et subtile lors du changement de thème. */
+*,
+*::before,
+*::after {
+    transition-property: color, background-color, border-color, fill, stroke;
+    transition-timing-function: ease;
+    transition-duration: 200ms;
+}
+
+[x-cloak] {
+    display: none !important;
+}

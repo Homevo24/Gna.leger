@@ -11,8 +11,19 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                paper: 'rgb(var(--color-paper) / <alpha-value>)',
+                ink: 'rgb(var(--color-ink) / <alpha-value>)',
+                accent: 'rgb(var(--color-accent) / <alpha-value>)',
+            },
+            borderRadius: {
+                panel: '32px',
+                card: '16px',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Space Grotesk"', ...defaultTheme.fontFamily.sans],
+                display: ['"Space Grotesk"', ...defaultTheme.fontFamily.sans],
+                brand: ['"Black Ops One"', ...defaultTheme.fontFamily.sans],
             },
         },
     },
