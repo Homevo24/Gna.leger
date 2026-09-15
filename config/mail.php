@@ -115,4 +115,16 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Form Notification Address
+    |--------------------------------------------------------------------------
+    |
+    | Adresse qui reçoit une notification à chaque nouveau message envoyé via
+    | le formulaire de contact du site public.
+    |
+    */
+
+    'contact_notification_email' => env('CONTACT_NOTIFICATION_EMAIL', 'hello@example.com'),
+
 ];
